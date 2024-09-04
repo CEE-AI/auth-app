@@ -1,13 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './App.js';
 import reportWebVitals from './reportWebVitals';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import { AuthProvider } from './components/AuthProvider.tsx';
+import ProtectedRoute from './components/ProtectedRoute.tsx';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />
+  },
+  {
+    path: '/protected',
+    element: (
+    <ProtectedRoute allowedRoles={['admin']}>
+      <div>protected content</div>
+    </ProtectedRoute>
+      
+    ),
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
   </React.StrictMode>
 );
 
